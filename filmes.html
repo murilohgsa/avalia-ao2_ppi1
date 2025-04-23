@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontrar Filmes</title>
+    <link rel="shortcut icon" href="https://images.vexels.com/media/users/3/321264/isolated/preview/cfabfc57c1ea0517d56456ad31b4bc51-icone-da-camera-de-cinema.png" type="image/x-icon">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            background-color: rgb(0, 0, 0);
+        }
+        header{
+            width: 100vw;
+            height: 10vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        #imgcam{
+            width: 40px;
+            height: 40px;
+        }
+        #txtpesquisa{
+            width: 200px;
+            height: 20px;
+            border-radius: 8px;
+            border: none;
+        }
+        h1{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif    ;
+        }
+        #imglupa{
+            width: 20px;
+            height: 20px;
+        }
+        section{
+            display: flex;
+            justify-content: center;
+        }
+        #conteudo{
+            margin: 10px;
+            width: 98vw;
+            height: auto;
+            margin: 10px;
+            width: 98vw;
+            height: 80vh;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .filme {
+            width: 200px;
+            background-color: rgba(140, 0, 255, 0.774);
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .filme img{
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+        #botao{
+            margin-left: 10px;
+            background-color: grey;
+            border: 1px solid black;
+            border-radius: 8px;
+            padding: 3px;
+            cursor: pointer;
+        }
+        #botao:hover{
+            background-color: white;
+        }
+        p{
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://images.vexels.com/media/users/3/318485/isolated/preview/e20415ee9df2b74b21041730fb43d7de-icone-de-camera-de-video-azul-e-branco.png?w=360" alt="Imagem Câmera" id="imgcam">
+        <h1>Encontrar Filmes</h1>
+    </header>
+    <section>
+        <input type="text" name="txtepesquisa" id="txtpesquisa">
+        <button id="botao">Pesquisar</button>
+    </section>
+    <div id="conteudo">
+
+    </div>
+</body>
+<script>
+    let nome = document.getElementById("txtpesquisa");
+    let conteudo = document.getElementById("conteudo")
+    let botao = document.getElementById("botao")
+    let chave = "31236cb0b8d8d06db8c6f65f5d96558a"
+    function pesquisarfilme(){
+        let url = `https://api.themoviedb.org/3/search/movie?api_key=${chave}&query=${nome.value}`
+
+        fetch(url)
+        .then(res => res.json())
+        .then(data =>{
+            conteudo.innerHTML = ""
+            data.results.forEach(filme => {
+                let sinopse = filme.overview.length > 100 
+                ? filme.overview.substring(0, 100) + "..." 
+                : filme.overview
+                let div = document.createElement('div')
+                div.classList.add('filme')
+                div.innerHTML = `
+                <h2>${filme.title}</h2>
+                <p>${filme.release_date}</p>
+                <p><strong>Sinopse:</strong> ${sinopse || "Sinopse indisponível."}</p>
+                <img src="https://image.tmdb.org/t/p/w200${filme.poster_path}" />
+                `
+
+                conteudo.appendChild(div)
+            });
+        })
+        .catch(error =>{
+            alert(`Erro ao tentar procurar por ${nome}`)
+        })
+    }
+    nome.addEventListener('keypress', function(Enter){
+        if(Enter.key === 'Enter'){
+            pesquisarfilme()
+            
+        }
+    })
+    botao.addEventListener("click", function(){
+        pesquisarfilme()
+    })
+    
+
+    
+</script>
+</html>
