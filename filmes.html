@@ -58,7 +58,7 @@
         }
         .filme {
             width: 200px;
-            background-color: rgba(140, 0, 255, 0.774);
+            background-color: rgba(255, 255, 255, 0.774);
             border-radius: 10px;
             padding: 10px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
@@ -67,6 +67,7 @@
         .filme img{
             border-radius: 5px;
             border: 1px solid black;
+            margin-top: 2px;
         }
         #botao{
             margin-left: 10px;
@@ -81,6 +82,12 @@
         }
         p{
             font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        #sinopse_filme{
+            overflow-y: scroll;
+            border: 1px solid black;
+            width: 200px;
+            height: 100px;
         }
     </style>
 </head>
@@ -110,16 +117,14 @@
         .then(data =>{
             conteudo.innerHTML = ""
             data.results.forEach(filme => {
-                let sinopse = filme.overview.length > 100 
-                ? filme.overview.substring(0, 100) + "..." 
-                : filme.overview
+                let sinopse = filme.overview
                 let div = document.createElement('div')
                 div.classList.add('filme')
                 div.innerHTML = `
                 <h2>${filme.title}</h2>
                 <p>${filme.release_date}</p>
-                <p><strong>Sinopse:</strong> ${sinopse || "Sinopse indisponível."}</p>
                 <img src="https://image.tmdb.org/t/p/w200${filme.poster_path}" />
+                <p id ="sinopse_filme"><strong>Sinopse:</strong> ${sinopse || "Sinopse indisponível."}</p>
                 `
 
                 conteudo.appendChild(div)
